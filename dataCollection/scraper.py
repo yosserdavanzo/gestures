@@ -1,11 +1,20 @@
+import string
 import serial
-import struct
 import time
 
+import json
 import csv
 
+def getComPort() -> string:
+    f = open(ARDUINO_CONFIG_FILE)
+    data = json.load(f)
+    comPort =  data["port"]
+    f.close()
+    return comPort
+
+ARDUINO_CONFIG_FILE = r".vscode\arduino.json"
 BAUDE_RATE = 115200
-PORT = 'COM3'
+PORT = getComPort()
 
 ser = serial.Serial(
         # Serial Port to read the data from
@@ -29,12 +38,15 @@ ser = serial.Serial(
 
 HEARTBEAT_FREQ = 50
 looper = 0
+print("Flushing Serial...")
 ser.flush()
-for i in range(200):
-    if i%HEARTBEAT_FREQ == 0 : print(i)
+print("...Flushed!")
 
-    with open('temp.csv', 'a', newline='') as f:
-        writ = csv.writer(f, delimiter=",")
+with open('temp.csv', 'a', newline='') as f:
+    writ = csv.writer(f, delimiter=",")
+    writ.writerow(["t", "aa.x", "aa.y", "aa.z", "aReal.x", "aReal.y", "aReal.z"])
+    for i in range(200):
+        if i%HEARTBEAT_FREQ == 0 : print(i)
         try:
             data = ser.readline().strip().split(b",")
             data_spl = [float(x) for x in data]
