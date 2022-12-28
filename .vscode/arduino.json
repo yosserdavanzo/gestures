@@ -1,6 +1,5 @@
 {
     "port": "COM4",
-    "configuration": "cpu=16MHzatmega328",
     "board": "arduino:avr:pro",
     "sketch": "dataCollection\\dataCollection.ino",
     "output": "../ArduinoOutput"

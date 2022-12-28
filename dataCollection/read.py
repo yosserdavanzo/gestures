@@ -1,10 +1,10 @@
 import string
 import serial
-import time
-import os
-
 import json
-import csv
+import time
+
+import matplotlib.pyplot as plt
+
 
 ARDUINO_CONFIG_FILE = r".vscode\arduino.json"
 
@@ -38,20 +38,6 @@ ser = serial.Serial(
         timeout=1
 )
 
-HEARTBEAT_FREQ = 10
-DURATION=500
-BACKOFF = 20/1000 # 20 ms as seconds
-FILE_NAME = 'temp.csv'
-
-print("Flushing Serial...")
-ser.flush()
-time.sleep(1)
-print("...Flushed!")
-
-if os.path.isfile(FILE_NAME):
-    os.remove(FILE_NAME)
-    print("Deleted old temp file")
-
 print("Hold Still!")
 for i in range(5):
     try:
@@ -59,18 +45,27 @@ for i in range(5):
     except:
         print("minor error found, attempting again....")
     time.sleep(.1)
-input("Press [ENTER] to continue")
 
-with open(FILE_NAME, 'x', newline='') as f:
-    writ = csv.writer(f, delimiter=",")
-    writ.writerow(["t", "aa.x", "aa.y", "aa.z", "aReal.x", "aReal.y", "aReal.z"])
-    for i in range(DURATION):
-        if i%HEARTBEAT_FREQ == 0 : print(i)
-        try:
-            data = ser.readline().strip().split(b",")
-            data_spl = [float(x) for x in data]
-            if len(data_spl)>5:
-                writ.writerow([time.time(), *data_spl])
-        except:
-            print("failed loop")
-            time.sleep(BACKOFF)
+input("Press [SPACE] to continue")
+
+total = 0
+passes = 0
+times = []
+previous = time.time()
+while total < 100:
+    total += 1
+    try:
+        print("a")
+        data = ser.readline().strip().split(b",")
+        print("b")
+        now = time.time()
+        times.append(now - previous)
+        previous = now
+        passes += 1
+    except:
+        print("FFFFFFFFFFailure")
+
+plt.plot(range(len(times)), times)
+plt.show()
+
+print( f"Success Rate of {passes / total}")

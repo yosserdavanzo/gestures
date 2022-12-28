@@ -150,7 +150,7 @@ void loop() {
             mpu.dmpGetGravity(&gravity, &q);
             mpu.dmpGetLinearAccel(&aaReal, &aa, &gravity);
 
-            // doesn't seem useful
+            // Quaternion doesn't seem useful
             // Serial.print(q.w);
             // Serial.print(",");
             // Serial.print(q.x);
