@@ -1,1 +1,5 @@
 **.csv
+Lib/
+share/
+
+**/__pycache__
