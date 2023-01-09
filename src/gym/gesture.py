@@ -21,58 +21,31 @@ standardCount = len(standardKeys)
 if not os.path.isfile(FILE_NAME):
     raise Exception("Missing Data file!")
 
-df = pd.read_csv(FILE_NAME, names = standardKeys, nrows=400)
+df = pd.read_csv(FILE_NAME, names = standardKeys, nrows=400, skiprows=1)
+
+x_train = np.array(df)
+y_train = [1,0]
+
+x_val = np.array(df)
+y_val = [1,0]
 
 
-x_train = [np.array(df)]
-y_train = [[1,0]]
+x_train = tf.reshape(x_train, [1, 400, standardCount])
+y_train = tf.reshape(y_train, [1, 2])
 
-x_val = [np.array(df)]
-y_val = [[1,0]]
-
-
-print(x_train[0].shape)
-# print(y_train[0].shape())
-
-# data_dim = 3
-# timestep = len(x_train[0])
 ### End reader
-
 
 
 ## Simplest LSTM + Dense
 gestureReader = Sequential()
-gestureReader.add(LSTM(5, input_shape=(4,400)))
+gestureReader.add(LSTM(2, input_shape=(400, 4)))
 gestureReader.add(Dense(2, activation="sigmoid"))
 gestureReader.compile(loss=tf.keras.losses.CategoricalCrossentropy(), optimizer='adam', metrics=['accuracy'])
 
-a = tf.random.normal([standardCount, 400])
-a = tf.reshape(a, [1, standardCount, 400])
-# b = tf.random.normal([timestep, data_dim+1])
-l = [1,0]
-l = tf.reshape(l, [1, 2, 1])
-
-data = tf.data.Dataset.from_tensor_slices((a, l))
-
-gestureReader.fit(data, epochs=2)
+gestureReader.fit(x_train, y_train, epochs=2)
 
 
-# d = tf.reshape(a, [1, timestep, data_dim+1])
-# y = gestureReader([d])
-# print(y)
-
-# Works
-# a = tf.random.normal([timestep, data_dim+1])
-# a = tf.reshape(a, [1, timestep, data_dim+1])
-# b = gestureReader([a])
-
-# print("woop")
-# print(a)
-
-# print(b)
-
-
-print(gestureReader.summary())
+# print(gestureReader.summary())
 
 # history = gestureReader.fit(
 #     a,
