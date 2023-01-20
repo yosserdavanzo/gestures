@@ -6,6 +6,7 @@ import os
 import json
 import csv
 from src.utils.serialProvider import gestureSerial
+from fileConstants import KEYS
 
 HEARTBEAT_FREQ = 10
 DURATION=500
@@ -32,7 +33,7 @@ input("Press [ENTER] to continue")
 
 with open(FILE_NAME, 'x', newline='') as f:
     writ = csv.writer(f, delimiter=",")
-    writ.writerow(["t", "aa.x", "aa.y", "aa.z", "aReal.x", "aReal.y", "aReal.z"])
+    writ.writerow(KEYS)
     for i in range(DURATION):
         if i%HEARTBEAT_FREQ == 0 : print(i)
         try:
