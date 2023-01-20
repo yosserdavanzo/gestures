@@ -62,7 +62,7 @@ class Scraper:
         return fileName
         
     def writeMultiFile(self, totalFileCount:int):
-        rejectStr = '3'
+        rejectStr = '.'
 
         count = 0
         while count < totalFileCount:
