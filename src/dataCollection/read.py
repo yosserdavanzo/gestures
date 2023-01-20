@@ -4,9 +4,9 @@ import json
 import time
 
 import matplotlib.pyplot as plt
+from fileConstants import *
 
-
-ARDUINO_CONFIG_FILE = r".vscode\arduino.json"
+ARDUINO_CONFIG_FILE = r".vscode\arduino.json" 
 
 def getComPort() -> string:
     f = open(ARDUINO_CONFIG_FILE)
@@ -52,7 +52,7 @@ total = 0
 passes = 0
 times = []
 previous = time.time()
-while total < 100:
+while total < DATA_LENGTH:
     total += 1
     try:
         print("a")
