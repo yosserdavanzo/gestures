@@ -12,6 +12,7 @@ STANDARD_KEY_COUNT = len(STANDARD_KEYS)
 # How many points should be read from the data
 DATA_LENGTH = 400
 
+### LABELS
 # How many commands currently supported
 COMMAND_COUNT = 2
 
